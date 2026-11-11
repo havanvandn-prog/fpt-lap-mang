@@ -80,72 +80,23 @@
     button.append(icon);
     button.after(tooltip);
   });
-  document.querySelectorAll('#bang-gia [data-slot="scroll-area-viewport"]').forEach(viewport=>{
-    viewport.removeAttribute('data-radix-scroll-area-viewport');
-    viewport.tabIndex=0;
-    viewport.setAttribute('aria-label','Quyền lợi gói cước');
-    const rows = [...viewport.querySelectorAll('p')].slice(0, 5).map(text => text.parentElement);
-    const fitFiveBenefits = () => {
-      if (!rows.length || !viewport.clientWidth) return;
-      const first = rows[0].getBoundingClientRect();
-      const last = rows[rows.length - 1].getBoundingClientRect();
-      const height = Math.ceil(last.bottom - first.top);
-      if (height > 0) viewport.parentElement.style.height = height + 'px';
-    };
-    const benefitsObserver = new ResizeObserver(fitFiveBenefits);
-    rows.forEach(row => benefitsObserver.observe(row));
-    fitFiveBenefits();
-    document.fonts.ready.then(fitFiveBenefits);
-    const scrollbar = document.createElement('div');
-    scrollbar.className = 'fpt-benefits-scrollbar';
-    const thumb = document.createElement('div');
-    thumb.className = 'fpt-benefits-thumb';
-    scrollbar.append(thumb);
-    viewport.parentElement.append(scrollbar);
-    const syncScrollbar = () => {
-      const overflow = viewport.scrollHeight - viewport.clientHeight;
-      scrollbar.hidden = overflow <= 1;
-      const height = Math.max(24, viewport.clientHeight * viewport.clientHeight / viewport.scrollHeight);
-      thumb.style.height = height + 'px';
-      thumb.style.transform = 'translateY(' + (overflow > 0 ? viewport.scrollTop / overflow * (viewport.clientHeight - height) : 0) + 'px)';
-    };
-    const setScrollFromPointer = event => {
-      const rect = scrollbar.getBoundingClientRect();
-      const travel = rect.height - thumb.offsetHeight;
-      viewport.scrollTop = Math.max(0, Math.min(1, (event.clientY - rect.top - thumb.offsetHeight / 2) / travel)) * (viewport.scrollHeight - viewport.clientHeight);
-    };
-    scrollbar.addEventListener('mousedown', event => event.stopPropagation());
-    scrollbar.addEventListener('pointerdown', event => {
-      event.preventDefault();
-      event.stopPropagation();
-      scrollbar.setPointerCapture(event.pointerId);
-      setScrollFromPointer(event);
+  const benefitRows = [...document.querySelectorAll('#bang-gia .fpt-benefit-row')];
+  const alignBenefits = () => {
+    const heights = new Map();
+    benefitRows.forEach(row => {
+      const textHeight = row.querySelector('p').getBoundingClientRect().height;
+      const iconHeight = row.querySelector('svg')?.getBoundingClientRect().height || 0;
+      const height = Math.ceil(Math.max(textHeight, iconHeight));
+      heights.set(row.dataset.benefitKey, Math.max(heights.get(row.dataset.benefitKey) || 0, height));
     });
-    scrollbar.addEventListener('pointermove', event => {
-      if (scrollbar.hasPointerCapture(event.pointerId)) setScrollFromPointer(event);
+    benefitRows.forEach(row => {
+      row.style.minHeight = heights.get(row.dataset.benefitKey) + 'px';
     });
-    viewport.addEventListener('scroll', syncScrollbar, {passive: true});
-    const scrollbarObserver = new ResizeObserver(syncScrollbar);
-    scrollbarObserver.observe(viewport);
-    rows.forEach(row => scrollbarObserver.observe(row));
-    syncScrollbar();
-
-
-    let drag=null;
-    viewport.addEventListener('mousedown',event=>{
-      if(viewport.scrollHeight>viewport.clientHeight)event.stopPropagation();
-    });
-    viewport.addEventListener('pointerdown',event=>{
-      if(event.pointerType!=='mouse'||event.button!==0||viewport.scrollHeight<=viewport.clientHeight)return;
-      if(event.clientX>=viewport.getBoundingClientRect().left+viewport.clientWidth)return;
-      drag={pointer:event.pointerId,y:event.clientY,top:viewport.scrollTop};
-      viewport.setPointerCapture(event.pointerId);
-    });
-    viewport.addEventListener('pointermove',event=>{
-      if(drag?.pointer===event.pointerId)viewport.scrollTop=drag.top+drag.y-event.clientY;
-    });
-    viewport.addEventListener('lostpointercapture',()=>{drag=null});
-  });
+  };
+  const benefitResizeObserver = new ResizeObserver(alignBenefits);
+  benefitRows.forEach(row => benefitResizeObserver.observe(row.querySelector('p')));
+  alignBenefits();
+  document.fonts.ready.then(alignBenefits);
 
   const carousels=new Map();
   const carouselEngines=new Map();

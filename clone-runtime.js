@@ -159,8 +159,6 @@
       sessionStorage.setItem('fpt_location_confirmed', '1');
     } catch(e) {}
 
-    document.querySelectorAll('.fpt-location-choice').forEach(button => button.removeAttribute('data-shine'));
-
     // Update location labels on page
     document.querySelectorAll('[data-location-label]').forEach(el => {
       el.textContent = `Hà Nội · ${district}`;
@@ -368,7 +366,7 @@
     const locationObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        if (!getLocationState().district) entry.target.setAttribute('data-shine', '');
+        entry.target.setAttribute('data-shine', '');
         locationObserver.unobserve(entry.target);
       });
     }, {threshold: 0.7});
