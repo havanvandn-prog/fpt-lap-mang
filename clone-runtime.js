@@ -1,5 +1,6 @@
 /* Standalone asset mapping, navigation and local-only preview forms. */
 (() => {
+  const runtimeUrl = document.currentScript.src;
   const imageRetries=new WeakMap();
   const retryImage=image=>{
     if(!(image instanceof HTMLImageElement)||!image.getAttribute('src'))return;
@@ -431,7 +432,7 @@
       </div>
       <div class="fpt-lp-plan-body">
         <div class="fpt-lp-plan-detail">
-          <iframe class="fpt-lp-plan-frame" src="/fpt-lap-mang/fpt-lap-mang/plan-content/${code}.html" title="Chi tiết ${plan.name}"></iframe>
+          <iframe class="fpt-lp-plan-frame" src="${new URL(`plan-content/${code}.html`, runtimeUrl).href}" title="Chi tiết ${plan.name}"></iframe>
         </div>
         <div class="fpt-lp-plan-consult" hidden>
           <button type="button" class="fpt-lp-plan-back">← Quay lại thông tin gói</button>
