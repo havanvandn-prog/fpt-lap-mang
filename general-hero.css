@@ -202,6 +202,15 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
   
 .fpt-offer-actions a { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
 #bang-gia { scroll-margin-top: 120px; }
+#uu-dai + #bang-gia { margin-block: 24px 0; }
+#bang-gia + #chon-goi { margin-block: 24px 0; }
+#chon-goi + .CategoryBanner_CategoryBannerWrapper__jilN_ { margin-block-start: 24px; }
+body[data-landing="general"] footer { text-align: center; }
+body[data-landing="general"] footer > .container > .order-1,
+body[data-landing="general"] footer .flex.items-start,
+body[data-landing="general"] footer .flex.items-center {
+  justify-content: center;
+}
 #bang-gia .fpt-price-row { position: relative; }
 #bang-gia .fpt-price-info {
   display: grid;

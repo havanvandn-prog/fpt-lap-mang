@@ -139,21 +139,22 @@
   ];
 
   function getLocationState() {
-    let district = 'Hoài Đức';
-    let region = 'xa';
     try {
-      const storedDist = sessionStorage.getItem('fpt_district');
-      const storedReg = sessionStorage.getItem('fpt_region');
-      if (storedDist) district = storedDist;
-      if (storedReg) region = storedReg;
+      if (sessionStorage.getItem('fpt_location_confirmed') === '1') {
+        const district = sessionStorage.getItem('fpt_district');
+        const region = sessionStorage.getItem('fpt_region');
+        const districts = region === 'phuong' ? hanoiDistrictsPhuong : hanoiDistrictsXa;
+        if (['xa', 'phuong'].includes(region) && districts.includes(district)) return { district, region };
+      }
     } catch(e) {}
-    return { district, region };
+    return { district: '', region: '' };
   }
 
   function applyLocation(district, region) {
     try {
       sessionStorage.setItem('fpt_district', district);
       sessionStorage.setItem('fpt_region', region);
+      sessionStorage.setItem('fpt_location_confirmed', '1');
     } catch(e) {}
 
     // Update location labels on page
@@ -189,7 +190,7 @@
     const cur = getLocationState();
     let selectedDistrict = cur.district;
     let selectedRegion = cur.region;
-    let activeTab = selectedRegion;
+    let activeTab = selectedRegion || 'xa';
 
     const dialog = document.createElement('dialog');
     dialog.id = 'fpt-location-modal';
@@ -222,9 +223,9 @@
       </div>
       <div class="fpt-loc-footer">
         <div class="fpt-loc-selected-info">
-          Đang chọn: <strong>Hà Nội · <span data-sel-name>${selectedDistrict}</span></strong>
+          Khu vực: <strong data-sel-name>${selectedDistrict ? `Hà Nội · ${selectedDistrict}` : 'Chưa chọn'}</strong>
         </div>
-        <button type="button" class="fpt-loc-confirm">Xác nhận</button>
+        <button type="button" class="fpt-loc-confirm" ${selectedDistrict ? '' : 'disabled'}>Xác nhận</button>
       </div>
     `;
 
@@ -248,7 +249,7 @@
           chip.classList.add('selected');
           selectedDistrict = dist;
           selectedRegion = tab;
-          selName.textContent = dist;
+          selName.textContent = `Hà Nội · ${dist}`;
           confirmBtn.disabled = false;
         };
         grid.appendChild(chip);
@@ -262,6 +263,7 @@
     renderDistricts(activeTab);
 
     confirmBtn.onclick = () => {
+      if (!selectedDistrict) return;
       applyLocation(selectedDistrict, selectedRegion);
       dialog.close();
     };
@@ -279,7 +281,7 @@
     const cur = getLocationState();
     const planObj = plans[plan];
     const planName = planObj?.name || plan.replaceAll('-', ' ');
-    const displayPrice = planObj ? (cur.region === 'phuong' ? planObj.price_phuong : planObj.price_xa) + 'đ/tháng' : (cur.region === 'phuong' ? 'từ 255.000đ/tháng' : 'từ 200.000đ/tháng');
+    const displayPrice = planObj ? (cur.district ? '' : 'từ ') + (cur.region === 'phuong' ? planObj.price_phuong : planObj.price_xa) + 'đ/tháng' : (cur.region === 'phuong' ? 'từ 255.000đ/tháng' : 'từ 200.000đ/tháng');
     const regionTitle = cur.region === 'phuong' ? 'Quận nội thành' : 'Huyện ngoại thành';
 
     const dialog = document.createElement('dialog');
@@ -300,8 +302,8 @@
           <div class="fpt-lp-summary-row">
             <span>Khu vực lắp đặt:</span>
             <div>
-              <strong>${cur.district}, Hà Nội (${regionTitle})</strong>
-              <button type="button" class="fpt-lp-change-loc">Đổi</button>
+              <strong>${cur.district ? `${cur.district}, Hà Nội (${regionTitle})` : 'Chưa chọn khu vực'}</strong>
+              <button type="button" class="fpt-lp-change-loc">${cur.district ? 'Đổi' : 'Chọn khu vực'}</button>
             </div>
           </div>
           <div class="fpt-lp-summary-row fpt-lp-summary-price">
@@ -338,7 +340,10 @@
   addEventListener('DOMContentLoaded', () => {
     mountFamilyContact();
     const cur = getLocationState();
-    applyLocation(cur.district, cur.region);
+    if (cur.district) applyLocation(cur.district, cur.region);
+    else document.querySelectorAll('[data-location-label]').forEach(el => {
+      el.textContent = 'Chọn khu vực';
+    });
 
     const header = document.querySelector('header');
     const nav = document.createElement('nav');
@@ -400,7 +405,7 @@
       return;
     }
 
-    const ctaBtn = event.target.closest('[data-cta="consultation"]');
+    const ctaBtn = event.target.closest('[data-cta="consultation"]:not([data-section="plan-details"])');
     if (ctaBtn) {
       event.preventDefault();
       event.stopPropagation();
@@ -428,11 +433,14 @@
     dialog.innerHTML=`
       <div class="fpt-lp-plan-head">
         <div><p>Thông tin gói cước</p><h2 id="fpt-plan-title">${plan.name}</h2></div>
-        <button type="button" class="fpt-lp-plan-close" aria-label="Đóng thông tin gói" autofocus>×</button>
+        <div class="fpt-lp-plan-actions">
+          <button type="button" class="fpt-lp-plan-cta" data-cta="consultation" data-section="plan-details" data-plan="${code}">Đăng ký gói này</button>
+          <button type="button" class="fpt-lp-plan-close" aria-label="Đóng thông tin gói" autofocus>×</button>
+        </div>
       </div>
       <div class="fpt-lp-plan-body">
         <div class="fpt-lp-plan-detail">
-          <iframe class="fpt-lp-plan-frame" src="${new URL(`plan-content/${code}.html`, runtimeUrl).href}" title="Chi tiết ${plan.name}"></iframe>
+          <iframe class="fpt-lp-plan-frame" src="${new URL(`plan-content/${code}.html?v=plan-register-2`, runtimeUrl).href}" title="Chi tiết ${plan.name}"></iframe>
         </div>
         <div class="fpt-lp-plan-consult" hidden>
           <button type="button" class="fpt-lp-plan-back">← Quay lại thông tin gói</button>
@@ -440,32 +448,33 @@
           <p>Gói đã chọn: <strong>${plan.name}</strong></p>
           <form data-plan="${code}">${registerFields}</form>
         </div>
-      </div>
-      <div class="fpt-lp-plan-footer">
-        <button type="button" data-cta="consultation" data-section="plan-details" data-plan="${code}">Đăng ký tư vấn gói này</button>
       </div>`;
     const detail=dialog.querySelector('.fpt-lp-plan-detail');
+    const frame=detail.querySelector('iframe');
+    frame.addEventListener('load',()=>{
+      const price=frame.contentDocument?.querySelector('[data-sp-area="product_info"][data-sp-extra*="price_"]');
+      if(price)price.textContent=plan.price+'đ';
+    });
     const consult=dialog.querySelector('.fpt-lp-plan-consult');
     const body=dialog.querySelector('.fpt-lp-plan-body');
-    const footer=dialog.querySelector('.fpt-lp-plan-footer');
-    const cta=footer.querySelector('button');
+    const cta=dialog.querySelector('.fpt-lp-plan-cta');
+    consult.querySelector('form').addEventListener('submit',event=>event.preventDefault());
     let detailScroll=0;
     const showConsultation=()=>{
       detailScroll=body.scrollTop;
-      detail.hidden=true;footer.hidden=true;consult.hidden=false;
+      detail.hidden=true;cta.hidden=true;consult.hidden=false;
       body.scrollTop=0;
       consult.querySelector('input').focus({preventScroll:true});
     };
     cta.onclick=showConsultation;
     const onPlanMessage=event=>{
-      const frame=dialog.querySelector('.fpt-lp-plan-frame');
       if(event.origin===location.origin && event.source===frame.contentWindow &&
         event.data?.type==='fpt-plan-register' && event.data.code===code)showConsultation();
     };
     window.addEventListener('message',onPlanMessage);
     dialog.addEventListener('close',()=>window.removeEventListener('message',onPlanMessage),{once:true});
     dialog.querySelector('.fpt-lp-plan-back').onclick=()=>{
-      consult.hidden=true;detail.hidden=false;footer.hidden=false;
+      consult.hidden=true;detail.hidden=false;cta.hidden=false;
       body.scrollTop=detailScroll;
       cta.focus({preventScroll:true});
     };

@@ -2,7 +2,7 @@
 (() => {
   // Landing scope: discard cards/sections whose outbound links were removed,
   // before measuring carousel slide widths.
-  if(document.querySelector('link[href="/fpt-lap-mang/landing.css"]')){
+  if(document.querySelector('link[href="/fpt-lap-mang/landing.css"],link[href^="/fpt-lap-mang/landing.css?"]')){
     document.querySelectorAll('h2').forEach(h=>{
       if(h.textContent.trim().startsWith('FPT Play - Gói xem truyền hình'))h.parentElement.remove();
     });
