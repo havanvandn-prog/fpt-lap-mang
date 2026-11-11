@@ -202,3 +202,54 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
   
 .fpt-offer-actions a { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
 #bang-gia { scroll-margin-top: 120px; }
+#bang-gia .fpt-price-row { position: relative; }
+#bang-gia .fpt-price-info {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  min-height: 28px;
+  border-radius: 50%;
+  cursor: help;
+}
+#bang-gia .fpt-price-info:focus-visible { outline: 2px solid #2631cf; }
+#bang-gia .fpt-price-tooltip {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  bottom: 100%;
+  max-width: 320px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #3d3d3d;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  visibility: hidden;
+}
+#bang-gia .fpt-price-info:is(:hover, :focus) + .fpt-price-tooltip,
+#bang-gia .fpt-price-tooltip:hover { visibility: visible; }
+#bang-gia [data-slot="carousel"]:not([data-can-scroll]) > button { display: none; }
+#bang-gia [data-slot="carousel"][data-can-scroll] > button {
+  display: grid;
+  place-items: center;
+}
+@media (width < 768px) {
+  #bang-gia [data-slot="carousel"][data-can-scroll] > button { inset-inline-start: 4px; }
+  #bang-gia [data-slot="carousel"][data-can-scroll] > button:last-child {
+    inset-inline-start: auto;
+    inset-inline-end: 4px;
+  }
+}
+@media (min-width: 768px) {
+  #bang-gia [data-slot="carousel-content"] { margin-inline: 24px; }
+  #bang-gia [data-slot="carousel-content"] > div { gap: 24px; }
+  #bang-gia [data-slot="carousel-item"] {
+    flex-basis: calc((100% - 48px) / 3);
+    padding-inline-start: 0;
+  }
+}
+@media (min-width: 1280px) {
+  #bang-gia [data-slot="carousel-item"] { flex-basis: calc((100% - 72px) / 4); }
+}

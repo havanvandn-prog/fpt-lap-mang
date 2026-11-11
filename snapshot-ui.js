@@ -61,6 +61,25 @@
     if(e.key==='Escape'){if(currentMenu)swapHeader(closedHeader());document.querySelector('[data-local-location]')?.remove();document.body.style.overflow='';}
   });
 
+  document.querySelectorAll('#bang-gia svg[data-slot="tooltip-trigger"]').forEach((icon,index)=>{
+    const row=icon.parentElement;
+    row.classList.add('fpt-price-row');
+    const button=document.createElement('button');
+    const tooltip=document.createElement('span');
+    tooltip.id=`fpt-price-tooltip-${index}`;
+    tooltip.className='fpt-price-tooltip';
+    tooltip.setAttribute('role','tooltip');
+    tooltip.textContent='Giá đã bao gồm VAT và có thể thay đổi theo khu vực và thời điểm.';
+    button.type='button';
+    button.className='fpt-price-info';
+    button.setAttribute('aria-label','Thông tin giá cước');
+    button.setAttribute('aria-describedby',tooltip.id);
+    button.addEventListener('click',()=>button.focus());
+    icon.setAttribute('aria-hidden','true');
+    icon.before(button);
+    button.append(icon);
+    button.after(tooltip);
+  });
   const carousels=new Map();
   const carouselEngines=new Map();
   const inView=new IntersectionObserver(entries=>{
@@ -83,6 +102,9 @@
     const next=prev?.nextElementSibling;
     if(prev?.tagName==='BUTTON')prev.disabled=!api.canScrollPrev();
     if(next?.tagName==='BUTTON')next.disabled=!api.canScrollNext();
+    if(root.closest('#bang-gia')){
+      root.toggleAttribute('data-can-scroll',api.scrollSnapList().length>1);
+    }
     carousels.set(root,index);
   }
   document.querySelectorAll('[data-slot="carousel"]').forEach(root=>{
