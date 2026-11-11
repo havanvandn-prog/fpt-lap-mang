@@ -84,6 +84,19 @@
     viewport.removeAttribute('data-radix-scroll-area-viewport');
     viewport.tabIndex=0;
     viewport.setAttribute('aria-label','Quyền lợi gói cước');
+    const rows = [...viewport.querySelectorAll('p')].slice(0, 5).map(text => text.parentElement);
+    const fitFiveBenefits = () => {
+      if (!rows.length || !viewport.clientWidth) return;
+      const first = rows[0].getBoundingClientRect();
+      const last = rows[rows.length - 1].getBoundingClientRect();
+      const height = Math.ceil(last.bottom - first.top);
+      if (height > 0) viewport.parentElement.style.height = height + 'px';
+    };
+    const benefitsObserver = new ResizeObserver(fitFiveBenefits);
+    rows.forEach(row => benefitsObserver.observe(row));
+    fitFiveBenefits();
+    document.fonts.ready.then(fitFiveBenefits);
+
     let drag=null;
     viewport.addEventListener('mousedown',event=>{
       if(viewport.scrollHeight>viewport.clientHeight)event.stopPropagation();

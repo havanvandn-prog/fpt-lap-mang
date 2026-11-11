@@ -324,3 +324,12 @@ body[data-landing="general"] footer .flex.items-center {
 @media (width < 768px) {
   .fpt-combo-grid { grid-template-columns: minmax(0, 360px); gap: 16px; }
 }
+
+.fpt-location-prompt { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding: 12px 16px; }
+.fpt-location-prompt p { margin: 0; font-size: 14px; line-height: 20px; }
+.fpt-location-choice { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 4px; }
+.fpt-location-shine { position: absolute; z-index: -1; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; }
+.fpt-location-shine::before { content: ""; position: absolute; inset-block: 0; left: -60%; width: 50%; background: linear-gradient(100deg, transparent, #fff 50%, transparent); transform: skewX(-20deg); opacity: 0; }
+.fpt-location-choice[data-shine] .fpt-location-shine::before { animation: fpt-location-shine 800ms ease-in-out 2; }
+@keyframes fpt-location-shine { 0% { left: -60%; opacity: 0; } 20% { opacity: .85; } 80% { opacity: .85; } 100% { left: 120%; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .fpt-location-choice[data-shine] .fpt-location-shine::before { animation: none; } }
