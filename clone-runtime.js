@@ -329,7 +329,7 @@
           <input type="hidden" name="region" value="${cur.region}">
           <input type="hidden" name="price" value="${displayPrice}">
           <button type="submit" style="margin-top: 8px;">Nhận tư vấn ngay</button>
-          <p>Bản xem thử: thông tin đã được kiểm tra trên trình duyệt, chưa gửi đăng ký.</p>
+          <p>*Cam kết bảo mật thông tin khách hàng theo chính sách của FPT</p>
         </form>
       </div>
     `;
