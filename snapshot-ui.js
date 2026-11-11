@@ -92,11 +92,17 @@
     benefitRows.forEach(row => {
       row.style.minHeight = heights.get(row.dataset.benefitKey) + 'px';
     });
+    const lists = [...document.querySelectorAll('#bang-gia .fpt-benefits-list')];
+    lists.forEach(list => list.style.marginTop = '0px');
+    const top = Math.max(...lists.map(list => list.getBoundingClientRect().top));
+    lists.forEach(list => list.style.marginTop = Math.max(0, top - list.getBoundingClientRect().top) + 'px');
   };
   const benefitResizeObserver = new ResizeObserver(alignBenefits);
   benefitRows.forEach(row => benefitResizeObserver.observe(row.querySelector('p')));
   alignBenefits();
   document.fonts.ready.then(alignBenefits);
+  document.querySelectorAll('#bang-gia img').forEach(img => img.addEventListener('load', alignBenefits));
+  window.addEventListener('load', alignBenefits);
 
   const carousels=new Map();
   const carouselEngines=new Map();

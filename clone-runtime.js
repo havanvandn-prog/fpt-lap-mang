@@ -193,7 +193,7 @@
     }
   }
 
-  function openLocationDialog() {
+  function openLocationDialog(onReturn) {
     document.getElementById('fpt-location-modal')?.remove();
     const cur = getLocationState();
     let selectedDistrict = cur.district;
@@ -231,7 +231,7 @@
       </div>
       <div class="fpt-loc-footer">
         <div class="fpt-loc-selected-info">
-          Khu vực: <strong data-sel-name>${selectedDistrict ? `Hà Nội · ${selectedDistrict}` : 'Chưa chọn'}</strong>
+          Khu vực: <strong data-sel-name class="${selectedDistrict ? '' : 'fpt-location-unselected'}">${selectedDistrict ? `Hà Nội · ${selectedDistrict}` : 'Chưa chọn'}</strong>
         </div>
         <button type="button" class="fpt-loc-confirm" ${selectedDistrict ? '' : 'disabled'}>Xác nhận</button>
       </div>
@@ -258,6 +258,7 @@
           selectedDistrict = dist;
           selectedRegion = tab;
           selName.textContent = `Hà Nội · ${dist}`;
+          selName.classList.remove('fpt-location-unselected');
           confirmBtn.disabled = false;
         };
         grid.appendChild(chip);
@@ -278,7 +279,7 @@
 
     dialog.querySelector('.fpt-loc-close').onclick = () => dialog.close();
     dialog.onclick = (e) => { if (e.target === dialog) dialog.close(); };
-    dialog.addEventListener('close', () => dialog.remove());
+    dialog.addEventListener('close', () => { dialog.remove(); if (onReturn) onReturn(); });
 
     document.body.appendChild(dialog);
     dialog.showModal();
@@ -311,13 +312,13 @@
           <div class="fpt-lp-summary-row">
             <span>Khu vực lắp đặt:</span>
             <div>
-              <strong>${cur.district ? `${cur.district}, Hà Nội (${regionTitle})` : 'Chưa chọn khu vực'}</strong>
+              <strong data-register-location class="${cur.district ? '' : 'fpt-location-unselected'}">${cur.district ? `${cur.district}, Hà Nội (${regionTitle})` : 'Chưa chọn khu vực'}</strong>
               <button type="button" class="fpt-lp-change-loc">${cur.district ? 'Đổi' : 'Chọn khu vực'}</button>
             </div>
           </div>
           <div class="fpt-lp-summary-row fpt-lp-summary-price">
             <span>Cước ưu đãi áp dụng:</span>
-            <strong>${displayPrice}</strong>
+            <strong data-register-price>${displayPrice}</strong>
           </div>
         </div>
         <form>
@@ -336,8 +337,22 @@
     dialog.querySelector('form').addEventListener('submit', event => event.preventDefault());
 
     dialog.querySelector('.fpt-lp-change-loc').onclick = () => {
-      dialog.close();
-      openLocationDialog();
+      openLocationDialog(() => {
+        const updated = getLocationState();
+        const available = !planObj?.combo || updated.region !== 'phuong' || Boolean(planObj.price_phuong);
+        const price = planObj ? (updated.district ? '' : 'từ ') + (updated.region === 'phuong' ? planObj.price_phuong : planObj.price_xa) + 'đ/tháng' : (updated.region === 'phuong' ? 'từ 255.000đ/tháng' : 'từ 200.000đ/tháng');
+        const locationLabel = dialog.querySelector('[data-register-location]');
+        locationLabel.textContent = updated.district ? `${updated.district}, Hà Nội (${updated.region === 'phuong' ? 'Quận nội thành' : 'Huyện ngoại thành'})` : 'Chưa chọn khu vực';
+        locationLabel.classList.toggle('fpt-location-unselected', !updated.district);
+        dialog.querySelector('.fpt-lp-change-loc').textContent = updated.district ? 'Đổi' : 'Chọn khu vực';
+        dialog.querySelector('[data-register-price]').textContent = available ? price : 'Gói này chưa áp dụng tại khu vực đã chọn';
+        const form = dialog.querySelector('form');
+        form.elements.district.value = updated.district;
+        form.elements.region.value = updated.region;
+        form.elements.price.value = available ? price : '';
+        form.querySelector('button[type="submit"]').disabled = !available;
+        dialog.querySelector('.fpt-lp-change-loc').focus({preventScroll:true});
+      });
     };
 
     dialog.querySelector('.fpt-lp-plan-close').onclick = () => dialog.close();

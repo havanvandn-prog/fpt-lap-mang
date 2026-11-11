@@ -587,3 +587,5 @@
 .fpt-lp-contact-channels a[data-cta="call"] svg{width:26px;height:26px;}
 .fpt-lp-contact-channels a[data-cta="zalo"]{background:#fff;}
 .fpt-lp-contact-channels .fpt-lp-contact-zalo{display:block;width:44px;height:44px;border:0;border-radius:0;object-fit:contain;}
+
+.fpt-location-unselected { color: #d1242f !important; }
