@@ -333,3 +333,20 @@ body[data-landing="general"] footer .flex.items-center {
 .fpt-location-choice[data-shine] .fpt-location-shine::before { animation: fpt-location-shine 800ms ease-in-out 2; }
 @keyframes fpt-location-shine { 0% { left: -60%; opacity: 0; } 20% { opacity: .85; } 80% { opacity: .85; } 100% { left: 120%; opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .fpt-location-choice[data-shine] .fpt-location-shine::before { animation: none; } }
+
+.fpt-location-choice {
+  background: linear-gradient(110deg, #fff2a3, #ffd44a 55%, #ffbf25);
+  border-color: #ffd44a;
+  color: #191e67;
+}
+.fpt-location-choice:hover { background: linear-gradient(110deg, #fff6bc, #ffe064 55%, #ffca3d); }
+.fpt-location-choice[data-shine] .fpt-location-shine::before { animation: fpt-location-shine-loop 3s ease-in-out infinite; }
+@keyframes fpt-location-shine-loop {
+  0% { left: -60%; opacity: 0; }
+  8% { opacity: .9; }
+  27% { left: 120%; opacity: 0; }
+  100% { left: 120%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fpt-location-choice[data-shine] .fpt-location-shine::before { animation: none; }
+}

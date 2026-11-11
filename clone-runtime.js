@@ -474,7 +474,7 @@
       </div>
       <div class="fpt-lp-plan-body">
         <div class="fpt-lp-plan-detail">
-          <iframe class="fpt-lp-plan-frame" src="${new URL(`plan-content/${code}.html?v=plan-register-2`, runtimeUrl).href}" title="Chi tiết ${plan.name}"></iframe>
+          <iframe class="fpt-lp-plan-frame" src="${new URL(`plan-content/${code}.html?v=giga-source-2`, runtimeUrl).href}" title="Chi tiết ${plan.name}"></iframe>
         </div>
         <div class="fpt-lp-plan-consult" hidden>
           <button type="button" class="fpt-lp-plan-back">← Quay lại thông tin gói</button>
