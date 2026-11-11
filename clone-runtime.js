@@ -68,17 +68,15 @@
         </svg>
       </button>
       <div id="fpt-lp-contact-channels" class="fpt-lp-contact-channels" hidden>
-        <a href="tel:${contactPhone}" data-cta="call" data-cta-placement="floating-contact">
+        <a href="tel:${contactPhone}" aria-label="Gọi tư vấn" title="Gọi tư vấn" data-cta="call" data-cta-placement="floating-contact">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.6 1.9z"/>
           </svg>
-          Cuộc gọi
         </a>
         <a href="${contactZalo}" target="_blank" rel="noopener noreferrer"
-          data-cta="zalo" data-cta-placement="floating-contact">
-          <span class="fpt-lp-contact-zalo" aria-hidden="true">Z</span>
-          Zalo
+          data-cta="zalo" data-cta-placement="floating-contact" aria-label="Nhắn Zalo" title="Nhắn Zalo">
+          <img class="fpt-lp-contact-zalo" src="${new URL('_next/static/media/logo-zalo.4d5b0b92.svg', runtimeUrl).href}" width="48" height="48" alt="" aria-hidden="true">
         </a>
       </div>`;
 
@@ -472,7 +470,7 @@
       </div>
       <div class="fpt-lp-plan-body">
         <div class="fpt-lp-plan-detail">
-          <iframe class="fpt-lp-plan-frame" src="${new URL(`plan-content/${code}.html?v=giga-source-2`, runtimeUrl).href}" title="Chi tiết ${plan.name}"></iframe>
+          <iframe class="fpt-lp-plan-frame" src="${new URL(`plan-content/${code}.html?v=combo-source-3`, runtimeUrl).href}" title="Chi tiết ${plan.name}"></iframe>
         </div>
         <div class="fpt-lp-plan-consult" hidden>
           <button type="button" class="fpt-lp-plan-back">← Quay lại thông tin gói</button>
@@ -484,8 +482,11 @@
     const detail=dialog.querySelector('.fpt-lp-plan-detail');
     const frame=detail.querySelector('iframe');
     frame.addEventListener('load',()=>{
-      const price=frame.contentDocument?.querySelector('[data-plan-price], [data-sp-area="product_info"][data-sp-extra*="price_"]');
-      if(price)price.textContent=plan.price+'đ';
+      const state=getLocationState();
+      const priceValue=state.region==='phuong'?plan.price_phuong:plan.price_xa;
+      frame.contentDocument?.querySelectorAll('[data-plan-price], [data-sp-area="product_info"][data-sp-extra*="price_"]').forEach(price=>price.textContent=priceValue+'đ');
+      const context=frame.contentDocument?.querySelector('[data-plan-location]');
+      if(context&&state.district)context.textContent=`Giá áp dụng tại Hà Nội · ${state.district} (${state.region==='phuong'?'phường':'xã'}). Ưu đãi Camera và Cloud 12 tháng áp dụng khi trả trước 3, 6 hoặc 12 tháng; không đồng thời với ưu đãi giảm 50.000đ khi thanh toán trả sau.`;
       const prefix=frame.contentDocument?.querySelector('[data-plan-price-prefix]');
       if(prefix)prefix.hidden=Boolean(getLocationState().district);
     });

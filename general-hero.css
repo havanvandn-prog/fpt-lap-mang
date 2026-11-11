@@ -399,3 +399,8 @@ body[data-landing="general"] footer .flex.items-center {
 
 .fpt-location-shine { z-index: 0; }
 .fpt-location-choice > svg, .fpt-location-choice > [data-location-label] { position: relative; z-index: 1; }
+
+/* FAQ answer sizing and breathing room, November 2026. */
+#faq [data-slot="accordion-content"], #faq [data-slot="accordion-content"] p {font-size:15px;line-height:24px;color:#888;}
+#faq [data-slot="accordion-content"] {padding-top:12px;}
+@media(min-width:1024px){#faq [data-slot="accordion-content"],#faq [data-slot="accordion-content"] p{font-size:16px;line-height:26px;}}
