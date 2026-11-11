@@ -382,3 +382,12 @@ body[data-landing="general"] footer .flex.items-center {
 
 #combo-vvip > h2 { text-align: center; }
 #combo-vvip .fpt-combo-location { justify-content: center; text-align: center; }
+
+@media (min-width: 1024px) {
+  #faq [data-slot="accordion-content"],
+  #faq [data-slot="accordion-content"] p {
+    font-size: 15px;
+    line-height: 24px;
+    color: #888;
+  }
+}
