@@ -227,6 +227,9 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
   object-position: right center;
 }
 .fpt-family-art .feature-card { background: rgb(101 27 0 / 34%) !important; }
+@media (min-width: 1280px) {
+  .fpt-family-art > .internet-container { inset-inline-start: -24px; }
+}
 @media (width < 1280px) {
   .internet-banner.fpt-family-art {
     background: linear-gradient(155deg, #b63a00, #d34a00 68%, #ff6400);
