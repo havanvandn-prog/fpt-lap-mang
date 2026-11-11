@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thông tin gói Internet Giga</title>
+  <link rel="stylesheet" href="../landing.css">
+  <style>
+    body { margin: 0; background: #f3f3f3; color: #18204c; font: 16px/1.5 system-ui, sans-serif; }
+    main { max-width: 920px; margin: auto; padding: clamp(16px, 4vw, 40px); }
+    h1 { margin: 0 0 16px; font-size: 28px; }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+    .fpt-lp-plan-summary dl { margin: 0; }
+    .fpt-lp-plan-summary dd { margin: 0; }
+    .giga-details { margin-top: 20px; padding: 18px; border-radius: 12px; background: white; }
+    .giga-details p { margin: 8px 0; }
+    .giga-unavailable { color: #a91d28; }
+    .giga-register { margin-top: 14px; border: 0; }
+  </style>
+</head>
+<body data-plan="goi-giga">
+  <main>
+    <h1>Internet Giga</h1>
+    <div class="fpt-lp-plan-summary">
+      <div class="fpt-lp-plan-photo"><img src="../assets/483a3d960ab9fe93-93ac7ed9-b7aa-4331-8df1-029cfabf195e_goi-giga_media_card_desktop.jpg" alt="Internet Giga cho cá nhân và gia đình nhỏ" width="500" height="362"></div>
+      <dl>
+        <div><dt>Giá cước</dt><dd class="fpt-lp-plan-price"><span data-plan-price-prefix>Từ </span><span data-plan-price>200.000đ</span><small>/tháng</small></dd></div>
+        <div><dt>Tốc độ tải xuống / tải lên</dt><dd>300 Mbps / 300 Mbps</dd></div>
+        <div><dt>Số thiết bị kết nối tham khảo</dt><dd>Đến 10 thiết bị</dd></div>
+      </dl>
+    </div>
+    <section class="giga-details">
+      <h2>Thiết bị và ưu đãi</h2>
+      <p>Modem Wi-Fi 6 băng tần kép. Thiết bị thực tế có thể thay đổi theo khu vực lắp đặt.</p>
+      <p class="giga-unavailable"><strong aria-hidden="true">×</strong> Không tặng Camera và Cloud tại cả xã và phường.</p>
+      <p>Phù hợp cá nhân và gia đình nhỏ dùng Internet để học, làm việc và xem phim.</p>
+      <button type="button" class="fpt-lp-plan-cta giga-register" data-register>Đăng ký ngay</button>
+    </section>
+  </main>
+  <script>
+    document.querySelector('[data-register]').addEventListener('click', () => {
+      parent.postMessage({type: 'fpt-plan-register', code: document.body.dataset.plan}, location.origin);
+    });
+  </script>
+</body>
+</html>

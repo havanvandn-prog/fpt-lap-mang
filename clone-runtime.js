@@ -46,7 +46,7 @@
     }
   }).observe(document.documentElement, {subtree:true,childList:true,attributes:true,attributeFilter:['src','srcset','style','poster']});
   const routes = new Set(['/', '/vi', '/internet/ca-nhan', '/internet/gia-dinh', '/internet/lap-mang-fpt', '/internet/game-thu', '/internet/doanh-nghiep'].map(r => r === '/' ? '/fpt-lap-mang/' : '/fpt-lap-mang' + r));
-  const contactPhone = '0962166512';
+  const contactPhone = '0378760348';
   const contactZalo = `https://zalo.me/${contactPhone}`;
 
   function mountFamilyContact() {
@@ -313,7 +313,7 @@
         </div>
         <form>
           <label>Họ và tên *<input required name="fullName" autocomplete="name" placeholder="Nguyễn Văn A"></label>
-          <label>Số điện thoại *<input required type="tel" inputmode="tel" autocomplete="tel" name="phone" pattern="[+]?[0-9]{9,15}" placeholder="0962166512"></label>
+          <label>Số điện thoại *<input required type="tel" inputmode="tel" autocomplete="tel" name="phone" pattern="[+]?[0-9]{9,15}" placeholder="0378760348"></label>
           <input type="hidden" name="plan" value="${plan}">
           <input type="hidden" name="district" value="${cur.district}">
           <input type="hidden" name="region" value="${cur.region}">
@@ -384,7 +384,7 @@
 
   const registerFields = `
     <label>Họ và tên *<input required name="fullName" autocomplete="name" placeholder="Nguyễn Văn A"></label>
-    <label>Số điện thoại *<input required type="tel" inputmode="tel" autocomplete="tel" name="phone" pattern="[+]?[0-9]{9,15}" placeholder="0962166512"></label>
+    <label>Số điện thoại *<input required type="tel" inputmode="tel" autocomplete="tel" name="phone" pattern="[+]?[0-9]{9,15}" placeholder="0378760348"></label>
     <button type="submit" style="margin-top: 8px;">Nhận tư vấn ngay</button>
     <p>Bản xem thử: thông tin đã được kiểm tra trên trình duyệt, chưa gửi đăng ký.</p>`;
 
@@ -452,8 +452,10 @@
     const detail=dialog.querySelector('.fpt-lp-plan-detail');
     const frame=detail.querySelector('iframe');
     frame.addEventListener('load',()=>{
-      const price=frame.contentDocument?.querySelector('[data-sp-area="product_info"][data-sp-extra*="price_"]');
+      const price=frame.contentDocument?.querySelector('[data-plan-price], [data-sp-area="product_info"][data-sp-extra*="price_"]');
       if(price)price.textContent=plan.price+'đ';
+      const prefix=frame.contentDocument?.querySelector('[data-plan-price-prefix]');
+      if(prefix)prefix.hidden=Boolean(getLocationState().district);
     });
     const consult=dialog.querySelector('.fpt-lp-plan-consult');
     const body=dialog.querySelector('.fpt-lp-plan-body');
