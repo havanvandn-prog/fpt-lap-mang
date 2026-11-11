@@ -80,6 +80,26 @@
     button.append(icon);
     button.after(tooltip);
   });
+  document.querySelectorAll('#bang-gia [data-slot="scroll-area-viewport"]').forEach(viewport=>{
+    viewport.removeAttribute('data-radix-scroll-area-viewport');
+    viewport.tabIndex=0;
+    viewport.setAttribute('aria-label','Quyền lợi gói cước');
+    let drag=null;
+    viewport.addEventListener('mousedown',event=>{
+      if(viewport.scrollHeight>viewport.clientHeight)event.stopPropagation();
+    });
+    viewport.addEventListener('pointerdown',event=>{
+      if(event.pointerType!=='mouse'||event.button!==0||viewport.scrollHeight<=viewport.clientHeight)return;
+      if(event.clientX>=viewport.getBoundingClientRect().left+viewport.clientWidth)return;
+      drag={pointer:event.pointerId,y:event.clientY,top:viewport.scrollTop};
+      viewport.setPointerCapture(event.pointerId);
+    });
+    viewport.addEventListener('pointermove',event=>{
+      if(drag?.pointer===event.pointerId)viewport.scrollTop=drag.top+drag.y-event.clientY;
+    });
+    viewport.addEventListener('lostpointercapture',()=>{drag=null});
+  });
+
   const carousels=new Map();
   const carouselEngines=new Map();
   const inView=new IntersectionObserver(entries=>{

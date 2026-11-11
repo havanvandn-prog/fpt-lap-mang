@@ -202,6 +202,14 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
   
 .fpt-offer-actions a { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
 #bang-gia { scroll-margin-top: 120px; }
+#bang-gia [data-slot="scroll-area-viewport"] {
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+  scrollbar-color: #a6a6a6 transparent;
+  cursor: grab;
+}
+#bang-gia [data-slot="scroll-area-viewport"]:active { cursor: grabbing; }
+#bang-gia [data-slot="scroll-area-scrollbar"] { display: none; }
 #uu-dai + #bang-gia { margin-block: 24px 0; }
 #bang-gia + #chon-goi { margin-block: 24px 0; }
 #chon-goi + .CategoryBanner_CategoryBannerWrapper__jilN_ { margin-block-start: 24px; }
