@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[2794],{92794:(e,n,r)=>{r.r(n),r.d(n,{CategoryBanner:()=>u});var a=r(95155),l=r(49369),t=r(48447),s=r.n(t);let u=e=>{var n;let{section:r}=e;return(0,a.jsx)("div",{className:s().CategoryBannerWrapper,dangerouslySetInnerHTML:{__html:(0,l.pn)(null!=(n=null==r?void 0:r.html_content)?n:"")}})}}}]);

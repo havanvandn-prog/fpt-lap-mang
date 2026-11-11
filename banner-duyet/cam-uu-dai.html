@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Duyệt hero cam — Lắp Internet FPT</title>
+  <link rel="stylesheet" href="cam-uu-dai.css">
+</head>
+<body>
+  <main>
+    <section class="fpt-offer-hero" aria-labelledby="offer-title">
+      <img class="fpt-offer-background" src="nen-cam-uu-dai.png" width="2172" height="724" alt="" fetchpriority="high">
+      <div class="fpt-offer-copy">
+        <h1 id="offer-title">Lắp Internet FPT ngay</h1>
+        <p class="fpt-offer-price">Chỉ từ <strong data-hero-price>195.000đ</strong><span>/tháng</span></p>
+        <ul class="fpt-offer-benefits" aria-label="Quyền lợi và đăng ký">
+          <li>
+            <span class="fpt-offer-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M2 8a16 16 0 0 1 20 0M5 12a11 11 0 0 1 14 0M8.5 16a5.5 5.5 0 0 1 7 0"/>
+                <circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+            </span>
+            <div><h2>Trang bị modem Wi-Fi 6</h2><p>Cho học tập, làm việc và giải trí</p></div>
+          </li>
+          <li>
+            <span class="fpt-offer-icon fpt-offer-icon-gift" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 8h18v4H3zM5 12v9h14v-9M12 8v13"/>
+                <path d="M12 8C6 8 4 5 6 3s6 1 6 5Zm0 0c6 0 8-3 6-5s-6 1-6 5Z"/>
+              </svg>
+            </span>
+            <div><h2>Tặng 01 tháng cước*</h2><p>Khi đăng ký 12 tháng</p></div>
+          </li>
+          <li>
+            <span class="fpt-offer-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3"/>
+                <rect x="9" y="2" width="6" height="4" rx="1"/>
+                <path d="m8 13 3 3 5-6"/>
+              </svg>
+            </span>
+            <div><h2>Thủ tục đơn giản</h2><p>Đăng ký online, nhân viên hỗ trợ</p></div>
+          </li>
+        </ul>
+        <div class="fpt-offer-actions">
+          <button type="button" data-action="register">Đăng ký lắp mạng</button>
+          <button type="button" class="fpt-offer-secondary" data-action="pricing">Xem bảng giá <span aria-hidden="true">↓</span></button>
+        </div>
+        <p class="fpt-offer-terms">*Giá và ưu đãi theo gói, khu vực và kỳ thanh toán áp dụng.</p>
+      </div>
+    </section>
+  </main>
+  <dialog aria-labelledby="preview-title">
+    <form method="dialog">
+      <h2 id="preview-title"></h2>
+      <p>Bản duyệt giao diện. Khi triển khai, nút sẽ kết nối với form đăng ký hoặc bảng giá theo khu vực.</p>
+      <button>Đóng</button>
+    </form>
+  </dialog>
+  <script>
+    const previewDialog = document.querySelector('dialog');
+    document.querySelectorAll('[data-action]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelector('#preview-title').textContent = button.dataset.action === 'register'
+          ? 'Đăng ký lắp mạng' : 'Xem bảng giá';
+        previewDialog.showModal();
+      });
+    });
+  </script>
+</body>
+</html>

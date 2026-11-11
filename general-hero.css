@@ -1,0 +1,204 @@
+.fpt-offer-hero {
+  position: relative;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: #ff730a;
+}
+.fpt-offer-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+.fpt-offer-copy {
+  width: 54%;
+  padding: 28px 24px 28px max(40px, calc((100vw - 1440px) / 2 + 32px));
+}
+.fpt-offer-copy h1 {
+  margin: 0 0 6px;
+  font-size: 44px;
+  line-height: 52.8px;
+  font-weight: 700;
+  color: white;
+  -webkit-text-stroke: 1px #191e67;
+  paint-order: stroke fill;
+  text-shadow: 0 3px 0 #191e67, 0 5px 12px #9b37002b;
+}
+.fpt-offer-heading-group {
+  display: grid;
+  width: fit-content;
+  max-width: 100%;
+}
+.fpt-offer-heading-group .fpt-offer-benefits {
+  width: 100%;
+  min-width: 0;
+}
+.fpt-offer-price {
+  color: white;
+  text-shadow: 0 1px 3px #612300;
+  margin: 0 0 16px;
+  font-size: 26.4px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+.fpt-offer-price strong { font-size: 48.4px; font-variant-numeric: tabular-nums; }
+.fpt-offer-benefits {
+  display: grid;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+}
+.fpt-offer-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 62px;
+  padding: 7px 16px 7px 12px;
+  border: 1px solid #fff4d5;
+  border-radius: 15px;
+  background: #fff0c9;
+  box-shadow: 0 3px 0 #c755001a;
+}
+.fpt-offer-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #224aff;
+  color: white;
+}
+.fpt-offer-icon-gift { background: #ff5400; }
+.fpt-offer-benefits h2 {
+  margin: 0;
+  color: #224aff;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 700;
+}
+.fpt-offer-benefits h2 span { color: #ff5400; }
+.fpt-offer-benefits p { margin: 1px 0 0; font-size: 15px; line-height: 20px; color: #3d3d3d; }
+.fpt-offer-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.fpt-offer-actions :is(button, a) {
+  min-height: 48px;
+  padding: 10px 24px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--color-brand-blue-primary, #4564ed);
+  color: white;
+  cursor: pointer;
+  font: 700 16px/24px sfProDisplay, system-ui, sans-serif;
+}
+.fpt-offer-actions :is(button, a):hover { background: var(--color-brand-blue-dark, #2631cf); }
+.fpt-offer-actions .fpt-offer-secondary { color: #fff; background: #16823a; border-color: #16823a; }
+.fpt-offer-actions .fpt-offer-secondary:hover { background: #106c2f; border-color: #106c2f; }
+button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+.fpt-offer-location { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 10px; }
+.fpt-offer-terms, .fpt-offer-location-status {
+  margin: 0;
+  color: white;
+  text-shadow: 0 1px 3px #612300;
+  font-size: 14px;
+  line-height: 20px;
+}
+.fpt-offer-location-status { flex-basis: 100%; }
+.fpt-offer-location-button {
+  min-height: 36px;
+  padding: 4px 10px;
+  border: 1px solid #fff0c9;
+  border-radius: 8px;
+  background: #fff6e0;
+  color: #191e67;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fpt-offer-location-button:hover { background: white; }
+.fpt-offer-location-button:focus-visible { outline: 2px solid #191e67; outline-offset: 2px; }
+
+
+
+@media (768px <= width < 1100px) {
+  .fpt-offer-copy { width: 58%; padding-left: 24px; }
+  .fpt-offer-copy h1 { font-size: 35.2px; line-height: 44px; }
+  .fpt-offer-benefits h2 { font-size: 18px; }
+}
+@media (width < 768px) {
+  .fpt-offer-hero { display: block; padding-bottom: 230px; }
+  .fpt-offer-background { object-fit: cover; height: 230px; top: auto; object-position: right bottom; }
+  .fpt-offer-copy { width: 100%; padding: 24px 16px; background: #ff8b18; }
+  .fpt-offer-heading-group { width: 100%; }
+  .fpt-offer-copy h1 { font-size: 30.8px; line-height: 39.6px; }
+  .fpt-offer-price { font-size: 22px; }
+  .fpt-offer-price strong { font-size: 39.6px; }
+  .fpt-offer-benefits h2 { font-size: 18px; line-height: 24px; }
+  .fpt-offer-benefits li { gap: 12px; padding: 10px 12px; }
+}
+
+    [data-landing="general"] {
+      --fpt-primary-cta: #224aff;
+    }
+    [data-landing="general"] .fpt-offer-actions > button,
+    [data-landing="general"] .fpt-lp-header-cta {
+      background-color: var(--fpt-primary-cta);
+    }
+    [data-landing="general"] .fpt-offer-actions > button:hover,
+    [data-landing="general"] .fpt-lp-header-cta:hover {
+      background-color: var(--color-brand-blue-dark, #2631cf);
+    }
+    .fpt-offer-workspace { background: #f75805; }
+    .fpt-offer-workspace .fpt-offer-background { object-position: right center; }
+    .fpt-offer-workspace .fpt-offer-location {
+      column-gap: 8px;
+    }
+    .fpt-offer-workspace .fpt-offer-location-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-height: 28px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 13px;
+      line-height: 20px;
+    }
+    .fpt-offer-workspace .fpt-offer-location-button::after {
+      position: absolute;
+      inset: -8px 0;
+      content: "";
+    }
+    .fpt-offer-workspace .fpt-offer-price,
+    .fpt-offer-workspace .fpt-offer-terms,
+    .fpt-offer-workspace .fpt-offer-location-status {
+      text-shadow: 0 1px 2px #642200, 0 2px 5px #642200cc;
+    }
+    @media (width < 1024px) {
+      .fpt-offer-workspace {
+        display: block;
+        padding-bottom: 0;
+        background: linear-gradient(150deg, #f45100, #ff730a);
+      }
+      .fpt-offer-workspace .fpt-offer-copy { width: 100%; background: transparent; }
+      .fpt-offer-workspace .fpt-offer-background {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 3 / 2;
+        margin-top: -8px;
+        mask-image: linear-gradient(to bottom, transparent, #000 18%);
+      }
+    }
+  
+.fpt-offer-actions a { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
+#bang-gia { scroll-margin-top: 120px; }

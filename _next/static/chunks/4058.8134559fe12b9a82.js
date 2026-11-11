@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[4058],{94058:(n,e,l)=>{l.r(e),l.d(e,{CommonHtmlSection:()=>c});var t=l(95155),m=l(49369),o=l(12858),s=l.n(o);let c=n=>{var e;let{section:l}=n;return(0,t.jsx)("div",{className:s().commonHtmlSection,dangerouslySetInnerHTML:{__html:(0,m.pn)(null!=(e=null==l?void 0:l.html_content)?e:"")}})}}}]);
