@@ -284,18 +284,12 @@
     dialog.showModal();
   }
 
-  const comboContactLinks = `
-    <div class="flex flex-wrap gap-2 mt-4">
-      <a class="fpt-lp-plan-cta inline-flex items-center" href="tel:${contactPhone}">Gọi tư vấn</a>
-      <a class="fpt-lp-plan-cta inline-flex items-center" href="${contactZalo}" target="_blank" rel="noopener noreferrer">Nhắn Zalo</a>
-    </div>`;
-
   function openRegister(plan = '') {
     document.getElementById('local-register')?.remove();
     const cur = getLocationState();
     const planObj = plans[plan];
     if (planObj?.combo && cur.region === 'phuong' && !planObj.price_phuong) return;
-    const planName = planObj?.name || plan.replaceAll('-', ' ');
+    const planName = planObj?.name || 'Cần tư vấn chọn gói';
     const displayPrice = planObj ? (cur.district ? '' : 'từ ') + (cur.region === 'phuong' ? planObj.price_phuong : planObj.price_xa) + 'đ/tháng' : (cur.region === 'phuong' ? 'từ 255.000đ/tháng' : 'từ 200.000đ/tháng');
     const regionTitle = cur.region === 'phuong' ? 'Quận nội thành' : 'Huyện ngoại thành';
 
@@ -326,7 +320,7 @@
             <strong>${displayPrice}</strong>
           </div>
         </div>
-        ${planObj?.combo ? comboContactLinks : `<form>
+        <form>
           <label>Họ và tên *<input required name="fullName" autocomplete="name" placeholder="Nguyễn Văn A"></label>
           <label>Số điện thoại *<input required type="tel" inputmode="tel" autocomplete="tel" name="phone" pattern="[+]?[0-9]{9,15}" placeholder="0378760348"></label>
           <input type="hidden" name="plan" value="${plan}">
@@ -335,9 +329,11 @@
           <input type="hidden" name="price" value="${displayPrice}">
           <button type="submit" style="margin-top: 8px;">Nhận tư vấn ngay</button>
           <p>Bản xem thử: thông tin đã được kiểm tra trên trình duyệt, chưa gửi đăng ký.</p>
-        </form>`}
+        </form>
       </div>
     `;
+
+    dialog.querySelector('form').addEventListener('submit', event => event.preventDefault());
 
     dialog.querySelector('.fpt-lp-change-loc').onclick = () => {
       dialog.close();
@@ -412,12 +408,6 @@
     document.querySelector('[data-sp-area="nav_bottom"]')?.parentElement.remove();
   });
 
-  const registerFields = `
-    <label>Họ và tên *<input required name="fullName" autocomplete="name" placeholder="Nguyễn Văn A"></label>
-    <label>Số điện thoại *<input required type="tel" inputmode="tel" autocomplete="tel" name="phone" pattern="[+]?[0-9]{9,15}" placeholder="0378760348"></label>
-    <button type="submit" style="margin-top: 8px;">Nhận tư vấn ngay</button>
-    <p>Bản xem thử: thông tin đã được kiểm tra trên trình duyệt, chưa gửi đăng ký.</p>`;
-
   document.addEventListener('click', event => {
     const locTrigger = event.target.closest('[data-select-location], button[aria-label="Chọn vị trí"]');
     if (locTrigger) {
@@ -470,13 +460,7 @@
       </div>
       <div class="fpt-lp-plan-body">
         <div class="fpt-lp-plan-detail">
-          <iframe class="fpt-lp-plan-frame" src="${new URL(`plan-content/${code}.html?v=combo-source-3`, runtimeUrl).href}" title="Chi tiết ${plan.name}"></iframe>
-        </div>
-        <div class="fpt-lp-plan-consult" hidden>
-          <button type="button" class="fpt-lp-plan-back">← Quay lại thông tin gói</button>
-          <h3>Đăng ký tư vấn</h3>
-          <p>Gói đã chọn: <strong>${plan.name}</strong></p>
-          ${plan.combo ? comboContactLinks : `<form data-plan="${code}">${registerFields}</form>`}
+          <iframe class="fpt-lp-plan-frame" src="${new URL(`plan-content/${code}.html?v=shared-register-2`, runtimeUrl).href}" title="Chi tiết ${plan.name}"></iframe>
         </div>
       </div>`;
     const detail=dialog.querySelector('.fpt-lp-plan-detail');
@@ -490,16 +474,10 @@
       const prefix=frame.contentDocument?.querySelector('[data-plan-price-prefix]');
       if(prefix)prefix.hidden=Boolean(getLocationState().district);
     });
-    const consult=dialog.querySelector('.fpt-lp-plan-consult');
-    const body=dialog.querySelector('.fpt-lp-plan-body');
     const cta=dialog.querySelector('.fpt-lp-plan-cta');
-    consult.querySelector('form')?.addEventListener('submit',event=>event.preventDefault());
-    let detailScroll=0;
     const showConsultation=()=>{
-      detailScroll=body.scrollTop;
-      detail.hidden=true;cta.hidden=true;consult.hidden=false;
-      body.scrollTop=0;
-      consult.querySelector('input, a').focus({preventScroll:true});
+      dialog.close();
+      openRegister(code);
     };
     cta.onclick=showConsultation;
     const onPlanMessage=event=>{
@@ -508,11 +486,6 @@
     };
     window.addEventListener('message',onPlanMessage);
     dialog.addEventListener('close',()=>window.removeEventListener('message',onPlanMessage),{once:true});
-    dialog.querySelector('.fpt-lp-plan-back').onclick=()=>{
-      consult.hidden=true;detail.hidden=false;cta.hidden=false;
-      body.scrollTop=detailScroll;
-      cta.focus({preventScroll:true});
-    };
     dialog.querySelector('.fpt-lp-plan-close').onclick=()=>dialog.close();
     dialog.addEventListener('close',()=>{
       document.documentElement.classList.remove('fpt-lp-plan-open');
