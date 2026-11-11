@@ -116,6 +116,8 @@
   }
   // Product detail pages on fpt.vn/internet/{plan}, updated 11/11/2026 for Hanoi Xã vs Phường.
   const plans = {
+    'combo-internet-giga-vvip-lite': {name:'Combo Giga V.VIP', price_xa:'220.000', price_phuong:null, price:'220.000', combo:true},
+    'combo-internet-sky-vvip-lite': {name:'Combo Sky V.VIP', price_xa:'239.000', price_phuong:'269.000', price:'239.000', combo:true},
     'goi-giga': {name:'Internet Giga', price_xa:'200.000', price_phuong:'255.000', price:'200.000', download:'300 Mbps', devices:10, mesh:0,
       usage:'Phù hợp cá nhân, hộ gia đình nhỏ với nhu cầu học tập, làm việc và giải trí cơ bản.'},
     'goi-giga-f1': {name:'Internet Giga F1', price_xa:'200.000', price_phuong:'255.000', price:'200.000', download:'300 Mbps', devices:10, mesh:1,
@@ -177,6 +179,14 @@
     document.querySelectorAll('.fpt-lp-price-note').forEach(el => {
       const val = region === 'phuong' ? el.dataset.notePhuong : el.dataset.noteXa;
       if (val) el.textContent = val;
+    });
+
+    document.querySelectorAll('[data-combo-plan]').forEach(card => {
+      const plan = plans[card.dataset.comboPlan];
+      card.hidden = region === 'phuong' && !plan.price_phuong;
+    });
+    document.querySelectorAll('[data-combo-area]').forEach(label => {
+      label.textContent = region === 'phuong' ? 'Giá áp dụng tại phường.' : 'Giá áp dụng tại xã.';
     });
 
     // Update active memory plans
@@ -276,10 +286,17 @@
     dialog.showModal();
   }
 
+  const comboContactLinks = `
+    <div class="flex flex-wrap gap-2 mt-4">
+      <a class="fpt-lp-plan-cta inline-flex items-center" href="tel:${contactPhone}">Gọi tư vấn</a>
+      <a class="fpt-lp-plan-cta inline-flex items-center" href="${contactZalo}" target="_blank" rel="noopener noreferrer">Nhắn Zalo</a>
+    </div>`;
+
   function openRegister(plan = '') {
     document.getElementById('local-register')?.remove();
     const cur = getLocationState();
     const planObj = plans[plan];
+    if (planObj?.combo && cur.region === 'phuong' && !planObj.price_phuong) return;
     const planName = planObj?.name || plan.replaceAll('-', ' ');
     const displayPrice = planObj ? (cur.district ? '' : 'từ ') + (cur.region === 'phuong' ? planObj.price_phuong : planObj.price_xa) + 'đ/tháng' : (cur.region === 'phuong' ? 'từ 255.000đ/tháng' : 'từ 200.000đ/tháng');
     const regionTitle = cur.region === 'phuong' ? 'Quận nội thành' : 'Huyện ngoại thành';
@@ -311,7 +328,7 @@
             <strong>${displayPrice}</strong>
           </div>
         </div>
-        <form>
+        ${planObj?.combo ? comboContactLinks : `<form>
           <label>Họ và tên *<input required name="fullName" autocomplete="name" placeholder="Nguyễn Văn A"></label>
           <label>Số điện thoại *<input required type="tel" inputmode="tel" autocomplete="tel" name="phone" pattern="[+]?[0-9]{9,15}" placeholder="0378760348"></label>
           <input type="hidden" name="plan" value="${plan}">
@@ -320,7 +337,7 @@
           <input type="hidden" name="price" value="${displayPrice}">
           <button type="submit" style="margin-top: 8px;">Nhận tư vấn ngay</button>
           <p>Bản xem thử: thông tin đã được kiểm tra trên trình duyệt, chưa gửi đăng ký.</p>
-        </form>
+        </form>`}
       </div>
     `;
 
@@ -368,7 +385,7 @@
 
     document.querySelectorAll('[data-slot="carousel-item"] a[data-register-plan]').forEach(anchor => {
       const plan = plans[anchor.dataset.registerPlan];
-      if (!plan) return;
+      if (!plan || (plan.combo && !anchor.closest('#combo-vvip'))) return;
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'fpt-lp-detail-trigger';
@@ -425,7 +442,7 @@
   function openPlanDetails(trigger) {
     const code=trigger.dataset.planDetails;
     const plan=plans[code];
-    if(!plan||document.getElementById('fpt-plan-details'))return;
+    if(!plan||document.getElementById('fpt-plan-details')||(plan.combo&&!plan.price))return;
     const dialog=document.createElement('dialog');
     dialog.id='fpt-plan-details';
     dialog.className='fpt-lp-plan';
@@ -446,7 +463,7 @@
           <button type="button" class="fpt-lp-plan-back">← Quay lại thông tin gói</button>
           <h3>Đăng ký tư vấn</h3>
           <p>Gói đã chọn: <strong>${plan.name}</strong></p>
-          <form data-plan="${code}">${registerFields}</form>
+          ${plan.combo ? comboContactLinks : `<form data-plan="${code}">${registerFields}</form>`}
         </div>
       </div>`;
     const detail=dialog.querySelector('.fpt-lp-plan-detail');
@@ -460,13 +477,13 @@
     const consult=dialog.querySelector('.fpt-lp-plan-consult');
     const body=dialog.querySelector('.fpt-lp-plan-body');
     const cta=dialog.querySelector('.fpt-lp-plan-cta');
-    consult.querySelector('form').addEventListener('submit',event=>event.preventDefault());
+    consult.querySelector('form')?.addEventListener('submit',event=>event.preventDefault());
     let detailScroll=0;
     const showConsultation=()=>{
       detailScroll=body.scrollTop;
       detail.hidden=true;cta.hidden=true;consult.hidden=false;
       body.scrollTop=0;
-      consult.querySelector('input').focus({preventScroll:true});
+      consult.querySelector('input, a').focus({preventScroll:true});
     };
     cta.onclick=showConsultation;
     const onPlanMessage=event=>{

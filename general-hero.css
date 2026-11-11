@@ -308,3 +308,19 @@ body[data-landing="general"] footer .flex.items-center {
 @media (min-width: 1280px) {
   #bang-gia [data-slot="carousel-item"] { flex-basis: calc((100% - 72px) / 4); }
 }
+
+#combo-vvip { scroll-margin-top: 120px; margin-bottom: 24px; }
+#combo-vvip + .CategoryBanner_CategoryBannerWrapper__jilN_ { margin-block-start: 24px; }
+.fpt-combo-location { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 20px; }
+.fpt-combo-location p { margin: 0; }
+.fpt-combo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 360px)); justify-content: center; gap: 24px; }
+.fpt-combo-card { min-width: 0; }
+.fpt-combo-card[hidden] { display: none; }
+.fpt-combo-card:only-child,
+.fpt-combo-card[hidden] + .fpt-combo-card { grid-column: 1 / -1; width: min(100%, 360px); justify-self: center; }
+.fpt-combo-card > div { width: 100%; }
+.fpt-combo-card picture img { width: 100%; height: auto; }
+.fpt-combo-card a[data-register-plan] { margin-top: auto; }
+@media (width < 768px) {
+  .fpt-combo-grid { grid-template-columns: minmax(0, 360px); gap: 16px; }
+}
