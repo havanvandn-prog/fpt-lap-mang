@@ -205,6 +205,41 @@ button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
 #uu-dai + #bang-gia { margin-block: 24px 0; }
 #bang-gia + #chon-goi { margin-block: 24px 0; }
 #chon-goi + .CategoryBanner_CategoryBannerWrapper__jilN_ { margin-block-start: 24px; }
+#chon-goi .fpt-choose-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.internet-banner.fpt-family-art {
+  background: #c74100;
+  padding: 64px 24px;
+}
+.fpt-family-art > .fpt-family-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+}
+.fpt-family-art .feature-card { background: rgb(101 27 0 / 34%) !important; }
+@media (width < 1280px) {
+  .internet-banner.fpt-family-art {
+    background: linear-gradient(155deg, #b63a00, #d34a00 68%, #ff6400);
+    padding: 32px 0 0;
+  }
+  .fpt-family-art > .internet-container { padding-inline: 16px; }
+  .fpt-family-art > .fpt-family-background {
+    position: relative;
+    display: block;
+    height: clamp(220px, 62vw, 380px);
+    mask-image: linear-gradient(to bottom, transparent, black 20%);
+  }
+}
 body[data-landing="general"] footer { text-align: center; }
 body[data-landing="general"] footer > .container > .order-1,
 body[data-landing="general"] footer .flex.items-start,
