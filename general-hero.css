@@ -350,3 +350,35 @@ body[data-landing="general"] footer .flex.items-center {
 @media (prefers-reduced-motion: reduce) {
   .fpt-location-choice[data-shine] .fpt-location-shine::before { animation: none; }
 }
+
+#bang-gia picture img, #combo-vvip picture img {
+  display: block;
+  width: 100%;
+  height: auto !important;
+  aspect-ratio: 500 / 362;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.fpt-benefits-scrollbar { display: none; }
+@media (width < 768px) {
+  #bang-gia [data-slot="scroll-area-viewport"] { scrollbar-width: none; }
+  #bang-gia [data-slot="scroll-area-viewport"]::-webkit-scrollbar { display: none; }
+  .fpt-benefits-scrollbar {
+    display: block;
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 12px;
+    touch-action: none;
+    cursor: grab;
+  }
+  .fpt-benefits-scrollbar[hidden] { display: none; }
+  .fpt-benefits-thumb {
+    width: 5px;
+    margin-inline: auto;
+    border-radius: 999px;
+    background: #a6a6a6;
+  }
+}
+
+#combo-vvip > h2 { text-align: center; }
+#combo-vvip .fpt-combo-location { justify-content: center; text-align: center; }

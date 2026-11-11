@@ -96,6 +96,40 @@
     rows.forEach(row => benefitsObserver.observe(row));
     fitFiveBenefits();
     document.fonts.ready.then(fitFiveBenefits);
+    const scrollbar = document.createElement('div');
+    scrollbar.className = 'fpt-benefits-scrollbar';
+    const thumb = document.createElement('div');
+    thumb.className = 'fpt-benefits-thumb';
+    scrollbar.append(thumb);
+    viewport.parentElement.append(scrollbar);
+    const syncScrollbar = () => {
+      const overflow = viewport.scrollHeight - viewport.clientHeight;
+      scrollbar.hidden = overflow <= 1;
+      const height = Math.max(24, viewport.clientHeight * viewport.clientHeight / viewport.scrollHeight);
+      thumb.style.height = height + 'px';
+      thumb.style.transform = 'translateY(' + (overflow > 0 ? viewport.scrollTop / overflow * (viewport.clientHeight - height) : 0) + 'px)';
+    };
+    const setScrollFromPointer = event => {
+      const rect = scrollbar.getBoundingClientRect();
+      const travel = rect.height - thumb.offsetHeight;
+      viewport.scrollTop = Math.max(0, Math.min(1, (event.clientY - rect.top - thumb.offsetHeight / 2) / travel)) * (viewport.scrollHeight - viewport.clientHeight);
+    };
+    scrollbar.addEventListener('mousedown', event => event.stopPropagation());
+    scrollbar.addEventListener('pointerdown', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      scrollbar.setPointerCapture(event.pointerId);
+      setScrollFromPointer(event);
+    });
+    scrollbar.addEventListener('pointermove', event => {
+      if (scrollbar.hasPointerCapture(event.pointerId)) setScrollFromPointer(event);
+    });
+    viewport.addEventListener('scroll', syncScrollbar, {passive: true});
+    const scrollbarObserver = new ResizeObserver(syncScrollbar);
+    scrollbarObserver.observe(viewport);
+    rows.forEach(row => scrollbarObserver.observe(row));
+    syncScrollbar();
+
 
     let drag=null;
     viewport.addEventListener('mousedown',event=>{
@@ -122,6 +156,7 @@
       inView.unobserve(entry.target);
     }
   },{threshold:0.1});
+  document.querySelectorAll('#combo-vvip .fpt-combo-card').forEach(card => inView.observe(card));
   function updateCarousel(root,index){
     carouselEngines.get(root)?.scrollTo(index);
   }
