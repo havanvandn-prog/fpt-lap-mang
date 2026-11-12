@@ -312,6 +312,11 @@
         dialog.remove();
       } catch (err) {}
 
+      // Kích hoạt Google Ads Conversion cho Form Submit (Chính - Primary)
+      if (window.triggerGoogleAdsConversion) {
+        window.triggerGoogleAdsConversion('formSubmit', { label: planName, value: 1.0 });
+      }
+
       // Mở Popup thông báo thành công
       openSuccessModal({
         fullName: fullName,

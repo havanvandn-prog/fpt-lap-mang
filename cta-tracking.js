@@ -2,6 +2,7 @@
  * FPT Landing Page - CTA & Button Click Tracking
  * Chuẩn setup-tracking-cta-contact-va-form-ggsheet
  * Lưu vào Sheet 'Click CTA' và gửi email thông báo về havanvanpod@gmail.com
+ * Tích hợp sẵn bộ kích hoạt Google Ads Conversion Tracking (Gọi điện, Zalo, CTA, Contact)
  */
 (function() {
   'use strict';
@@ -14,6 +15,20 @@
     if (now - lastClickTime < CLICK_THROTTLE_MS) return;
     lastClickTime = now;
 
+    // 1. Kích hoạt Google Ads Conversion (nếu đã cấu hình)
+    if (window.triggerGoogleAdsConversion) {
+      if (channel === 'phone') {
+        window.triggerGoogleAdsConversion('phone', { label: label });
+      } else if (channel === 'zalo') {
+        window.triggerGoogleAdsConversion('zalo', { label: label });
+      } else if (channel === 'form') {
+        window.triggerGoogleAdsConversion('cta', { label: label });
+      } else if (channel === 'contact') {
+        window.triggerGoogleAdsConversion('contact', { label: label });
+      }
+    }
+
+    // 2. Gửi dữ liệu về Google Apps Script & Google Sheet
     var t = window.FPT_TRACKING || {};
     if (t.isInternal) return; // Bỏ qua nếu nội bộ
 
@@ -54,8 +69,15 @@
       return;
     }
 
-    // 3. Click nút Mở form đăng ký / Nhận tư vấn
-    var formBtn = e.target.closest('button[data-cta="consultation"], a[data-register-plan], .fpt-lp-header-cta, .fpt-contact-family-pill[data-plan]');
+    // 3. Click Floating contact pill (Nút liên hệ nhanh góc màn hình)
+    var contactPill = e.target.closest('.fpt-contact-family-pill');
+    if (contactPill && !contactPill.getAttribute('href')) {
+      trackCtaClick('contact', 'Bấm nút contact nổi', window.location.href);
+      return;
+    }
+
+    // 4. Click nút Mở form đăng ký / Nhận tư vấn (CTA)
+    var formBtn = e.target.closest('button[data-cta="consultation"], a[data-register-plan], .fpt-lp-header-cta');
     if (formBtn) {
       var plan = formBtn.getAttribute('data-register-plan') || formBtn.getAttribute('data-plan') || '';
       var btnLabel = formBtn.textContent ? formBtn.textContent.trim().replace(/\s+/g, ' ') : 'Mở Form Đăng Ký';
