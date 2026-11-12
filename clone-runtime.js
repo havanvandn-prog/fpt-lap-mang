@@ -50,7 +50,7 @@
   const contactZalo = `https://zalo.me/${contactPhone}`;
 
   function mountFamilyContact() {
-    if (!location.pathname.includes('lap-mang-fpt') && !location.pathname.includes('gia-dinh') && !location.pathname.endsWith('fpt-lap-mang') && !location.pathname.endsWith('fpt-lap-mang/')) return;
+    if (!location.pathname.includes('lap-mang-fpt') && !location.pathname.includes('gia-dinh') && !location.pathname.endsWith('fpt-lap-mang') && !location.pathname.endsWith('fpt-lap-mang/') && location.pathname !== '/' && location.pathname !== '') return;
 
     const contact = document.createElement('nav');
     contact.className = 'fpt-lp-contact';
